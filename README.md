@@ -1,14 +1,14 @@
-# ck_grader
+# Overview
 
-This is a small R program that makes grading CourseKata textbook homework easy. Suppose you want to grade pages 10.6 to 10.10 for your Monday Wednesday class, which is due May 6. Here's an overview of what you do:
+This is a small R program that makes grading CourseKata textbook homework easy. Suppose you want to grade pages 1.0 to 1.6 for your Monday Wednesday class, which is due February 20. Here's an overview of what you do:
 
-1. Soon after it's due, go to the "My Progress + Jupyter" page. Click "Refresh Data," and then "Download Student Progres." Put the file in the same directory as `ck_grader.r`, and name it `MW_10.6to10.10_5-6.csv`. The name of this *assignment file* tells the program which of your classes the assignment is for (`MW`), the pages to be graded (`10.6to10.10`), and the date it was downloaded (`5-6`).
+1. Soon after it's due, go to the "My Progress + Jupyter" page. Click "Refresh Data," and then "Download Student Progress." Name the file `MW_1.0to1.6_2-20.csv`, and put it in the same folder as the other csv files you download (See `INPUT_DIRECTORY` below in the Installation section). The name of this *assignment file* tells the program which of your classes the assignment is for (`MW`), the pages to be graded (`1.0to1.6`), and the date it was downloaded (`2-20`).
 
-2. (Optional but recommended) Go to "Modules", and within some or all of the pages 10.6 to 10.10, and click "Download data." Put the files in the same folder as step 1, and call them `MW_10.6_5-6.csv`, `MW_10.7_5-6.csv`, ..., `MW_10.10_5-6.csv`. These *page detail* files have much more detail than the corresponding column in the *assignment file* from step 1.
+2. (Optional but recommended) Go to "Modules", and within some or all of the pages 1.0 to 1.6, and click "Download data." Put the files in the same folder as step 1, and call them `MW_1.0_2-20.csv`, `MW_1.1_2-20.csv`, ..., `MW_1.6_2-20.csv`. These *page detail* files have much more detailed grades than the corresponding column in the *assignment file* from step 1.
 
-3. Open a terminal/command prompt in the folder. Type the command `R -s -f ck_grader.r` and press Enter. It will print out some information and maybe warnings, and *voilà!* There is a now a file called `ck_grades_MW.csv` which contains a column with the assignment's grades, labelled `10.6to10.10_5-6`.
+3. Double click the file `do_ck_grades_win.bat` in MS Windows or `do_ck_grades_mac.sh` in Macintosh. It will print out some information and maybe warnings, and *voilà!* There is a now a file called `ck_grades_MW.csv` which contains a column with the assignment's grades, labelled `1.0to1.6_2-20`.
 
-4. Repeat the process for every assignment on every due date, keeping everything in the same folder. It will have a ton of csv files, but they don't take up much storage space. To grade late HW, just repeat the process but with a different date label. Every page range/date assignment file will have its own column in the `MW_ck_grades.csv` file.
+4. Repeat the process for every assignment on every due date, keeping everything in the same folders. It will have a ton of csv files, but they don't take up much storage space. To grade late HW, just repeat the process but with a different date label. Every page range/date assignment file will have its own column in the `MW_ck_grades.csv` file.
 
 ## Motivation
 
@@ -21,18 +21,29 @@ The overview csv files from "My Progress -> Download Student Progress" do not in
 
 So, you can go to Module pages to download the individual *page detail* csv files, and copy the columns labelled "completed" and "correct," insert them into the overview file, and write an excel formula to calculate the grades for the assignment. This has some downsides:
 
-- It is extremely tedious. Let's say you have two classes, and in a certain week you have two assignments due, each including four pages. That's sixteen page detail csv's from which you have to copy columns. Then you'll have to write a formula in each of the four assignment csv's. Then later, if you want to give anyone late credit, you have to do it all again. Using `ck_grader.r`, you only have to download the files, but there's no need to open any of them yourself.
+- It is extremely tedious. Let's say you have two classes, and in a certain week you have two assignments due, each including four pages. That's sixteen page detail csv's from which you have to copy columns. Then you'll have to write a formula in each of the four assignment csv's. Then later, if you want to give anyone late credit, you have to do it all again. Using `ck_grader`, you only have to download the files, but there's no need to open any of them yourself.
 - Written answers are not counted as "correct" in the page detail view. If you don't scroll way to the right to see their answers, you will unwittingly be marking them all incorrect.
 
 ## Installation
 
 1. Install R on your computer. Go to [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html), choose a nearby mirror, choose `base`, and follow the instructions.
 
-2. Download the `ck_grader.r` file, along with 'README.md' (which you are reading right now.). You could download this github repository, but it might be simpler to [get them from my dropbox](https://www.dropbox.com/sh/jl7t98jy3c28cnn/AABPrtCmk8ZkhCvtKsfBzr8Ga?dl=0). Put them in the same folder you're going to put all of the csv's you download. This could be your Downloads folder for convenience, as long as you don't mind it getting clogged with hundreds of csv files.
+2. Download the following list of files, either using github (tricky), or [from my dropbox](https://www.dropbox.com/sh/jl7t98jy3c28cnn/AABPrtCmk8ZkhCvtKsfBzr8Ga?dl=0):
 
-3. There are a few options you should customize. Open `ck_grader.r` in any text editor, such as MS Notepad. Near the top, under `## USER OPTIONS`, you can read about and change the values of `MAX_POINTS`, `INCORRECT_CREDIT`, and `GRACE`. If you want, you can also dive in and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
+- `do_ck_grades.bat` (MS Windows) or `do_ck_grades.sh` (Macintosh) -- This is a tiny executable script that you double-click on, and it runs `R` with the code in `ck_grader.r`. You can put it anywhere handy, like on your desktop, home directory, or wherever you keep your Statistics materials.
+- `ck_grader.r` -- This is the main file. Put it in the same folder as `do_ck_grades.bat`. Do not just use the version shared with others in dropbox, because you'll need to customize some things for your computer (step 3 below).
+- `README.md` -- The instructions you're reading right now.
 
-## File Name Rules
+3. There are two options you **must** customize. Open `ck_grader.r` in any text editor, such as MS Notepad. Near the top, under `## USER OPTIONS`, you can read about and change the values of:
+
+- `INPUT_DIRECTORY` -- This is the path to where you put all csv's you download from CourseKata. It can be your Downloads folder for convenience, if you don't mind it filling up with lots of csv's. The examples commented out with `##` show how the format should look on Windows/Mac.
+- `OUTPUT_DIRECTORY` -- This is where `ck_grader` will put the result files, eg `ck_grades_MW.csv`. It can be the same as `INPUT_DIRECTORY`, or the place you keep your class grades, or whatever.
+
+These other three options start with working defaults, but you should review them and change them to your liking: `MAX_POINTS`, `INCORRECT_CREDIT`, and `GRACE`.
+
+If you want, you can also dive in and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
+
+## File rame rules
 
 Decide on the `<course_id>` you want to use for each class. This should consist of letters and/or numbers. It can be the days of the week, section numbers, or start times. Some fine examples are: `MW`, `MTWTh`, `800`, `65432`, or `Spam123`. Whatever it is, every csv you download for this class should start with your `<course_id>`.
 
@@ -57,9 +68,9 @@ Some example assignment file names that are NOT OK:
 - `227_2.1to2.5_9/16.csv` -- Use `-` for dates, not `/`.
 - `227_02.1to02.5_13-456.csv` -- Don't prepend pages with leading zeros.
 
-The above rules also apply to page detail files, except they should just have one page, with no `to` or `and`. If you want a page detail file to count as part of an assignment, make sure it has the exact same `<course_id>`, and date, and the page is in the range of pages in the assignment file name. Note that `02-14` and `2-14` are interpreted as different dates.
+The above rules also apply to *page detail* files, except they should just have one page, with no `to` or `and`, eg `227_2.1_9-16.csv`. If you want a page detail file to count as part of an assignment, make sure it has the exact same `<course_id>`, and date, and the page is in the range of pages in the assignment file name. Note that `02-14` and `2-14` are interpreted as different dates.
 
-** Notes
+## Notes
 
 - Output files (eg `MW_ck_grades.csv`) and input csv files should not be edited. Specifically, edited column names in output will cause problems. Students *must* be in the same row in every input and output file, so don't mess with rows. If you want to mess with stuff, copy a backup file to a different directory, and mess with that. However...
 
@@ -67,9 +78,11 @@ The above rules also apply to page detail files, except they should just have on
 
 - You don't have to download every page detail csv, but it's a good idea. Often, multiple questions in a page are grouped into one blue box with one submit button. These count as multiple points in the page detail csv, but only one point in the course-wide csv. If you don't include a page detail csv, these questions will be under-represented in scores.
 
-- It is a good idea to keep all of your downloaded csv input files here for the whole semester, as well as occasionally back up your output files (eg, ck_grades_MW.csv) to another directory. If something goes wrong, your output file may be erased.
+- It is a good idea to keep all of your downloaded csv input files in `INPUT_DIRECTORY` for the whole semester, as well as occasionally back up your output files (eg, `ck_grades_MW.csv`) to another directory. If something goes wrong, your output file may be erased.
 
-** Formula customization
+## When things go wrong
 
+If you get an error, or some unexptected results, first double-check that your files are named correctly (File Name Rules, above). Also make sure you correctly set `INPUT_DIRECTORY` and `OUTPUT_DIRECTORY` in `ck_grader.r`.
 
-
+If file names weren't the problem, don't hesitate to reach out to me. It may be a bug in the program, or that your csv files are formatted in an unexpected way, and either way, I want to fix it ASAP.
+ 
