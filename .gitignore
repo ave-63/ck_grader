@@ -1,0 +1,11 @@
+#Ignore everything...
+*
+
+#... except thise file
+!.gitignore
+!ck_grader.r
+!README.md
+!do_ck_grades_mac.sh
+!do_ck_grades_win.bat
+
+!*/
