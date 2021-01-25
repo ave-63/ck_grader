@@ -43,7 +43,7 @@ These other three options start with working defaults, but you should review the
 
 If you want, you can also dive in and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
 
-## File rame rules
+## File name rules
 
 Decide on the `<course_id>` you want to use for each class. This should consist of letters and/or numbers. It can be the days of the week, section numbers, or start times. Some fine examples are: `MW`, `MTWTh`, `800`, `65432`, or `Spam123`. Whatever it is, every csv you download for this class should start with your `<course_id>`.
 

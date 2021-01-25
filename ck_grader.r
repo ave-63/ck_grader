@@ -1,18 +1,15 @@
-## Issues to keep in mind:
-##
-## - Student rows must be lined up across all csv files. I think CourseKata always does
-##   this, but if for any reason rows are not lined up, results will be garbage.
-##
 ## USER OPTIONS:
 
 ## Path to folder containing all your downloaded csv files. You must edit this!
-## Windows example:
-## INPUT_DIRECTORY <- "C:\Users\your-username\Downloads\"
+## Windows format example:
+## INPUT_DIRECTORY <- "C:\\Users\\your-username\\Downloads\\"
+## Mac/Linux example:
 INPUT_DIRECTORY <- "/home/ben/Dropbox/Courses/227/r_stuff/ck_grader/"
 
 ## Path to folder where you want your result csv files to go. You must edit this!
-## Windows example:
-## OUTPUT_DIRECTORY <- "c:\Users\your-username\Downloads\"
+## Windows format example:
+## OUTPUT_DIRECTORY <- "C:\\Users\\your-username\\Downloads\\"
+## Mac/Linux example:
 OUTPUT_DIRECTORY <- "/home/ben/Dropbox/Courses/227/r_stuff/ck_grader/"
 
 ## Maximum points for each assignment. Can be a number, or "NUM_QUESTIONS" which
@@ -210,7 +207,7 @@ for(i in 1:nrow(pd)){
     }
 }
 
-## Now that all the data structures and files are sit up, it's time to grade.
+## Now that all the data structures and files are set up, it's time to grade.
 for(a in 1:nrow(asgn)){
     asgn_df <- read.csv(paste0(INPUT_DIRECTORY, asgn[a, "file_name"]))
     these_links <- pd_links[[asgn[a, "file_name"]]]
