@@ -84,14 +84,15 @@ asgn_matches <- stri_match_first_regex(input_filenames,
 page_matches <- stri_match_first_regex(input_filenames,
                                      '(\\w+)_(\\d+\\.\\d+)_(\\d+-\\d+)\\.csv$')
 output_matches <- stri_match_first_regex(output_filenames, 'ck_grades_(\\w+)\\.csv$')
+if(length(input_filenames) == 0){
+    stop(paste("Error: there are no csv files in INPUT_DIRECTORY:", INPUT_DIRECTORY))
+}
 for(i in 1:length(input_filenames)){
     if(is.na(asgn_matches[i,1]) && is.na(page_matches[i,1])){
-        print("The following file name does not match assignment, or page detail syntax and is being ignored:", quote = FALSE)
+        print("The following file will not be treated as input, because its name does not match assignment or page detail syntax:", quote = FALSE)
         print(input_filenames[[i]], quote = FALSE)
     }
 }
-#print(asgn_matches)
-#print(page_matches)
 
 ## Populate asgn dataframe with asgn_matches (assignments)
 file_name <- c()
@@ -116,7 +117,6 @@ for(i in 1:nrow(asgn_matches)){
     }
 }
 asgn <- data.frame(file_name=file_name, course_id=course_id, page_range=page_range, dl_date=dl_date, col_name=col_name)
-## print(asgn)
 
 ## If output files don't exist, create them
 duped = duplicated(asgn$course_id)
