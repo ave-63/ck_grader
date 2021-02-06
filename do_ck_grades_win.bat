@@ -1,10 +1,10 @@
 :: USER OPTIONS:
 
 :: Path to folder containing all your downloaded csv files. You must edit this!
-set INPUT_DIRECTORY=C:\Users\bensm\Downloads
+set INPUT_DIRECTORY=C:\Users\bensm\Downloads\
 
 :: Path to folder where you want your result csv files to go. You must edit this!
-set OUTPUT_DIRECTORY=C:\Users\bensm\Desktop
+set OUTPUT_DIRECTORY=C:\Users\bensm\Desktop\
 
 :: Maximum points for each assignment. Can be a number, or "NUM_QUESTIONS" which
 :: means 1 point per question in assignment. Default: 10
