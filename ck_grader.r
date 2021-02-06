@@ -1,34 +1,16 @@
-## USER OPTIONS:
+args <- commandArgs(trailingOnly = TRUE)
 
-## Path to folder containing all your downloaded csv files. You must edit this!
-## Windows format example:
-## INPUT_DIRECTORY <- "C:\\Users\\your-username\\Downloads\\"
-## Mac/Linux example:
-INPUT_DIRECTORY <- "/home/ben/Dropbox/Courses/227/r_stuff/ck_grader/"
+INPUT_DIRECTORY <- args[1]
+OUTPUT_DIRECTORY <- args[2]
+MAX_POINTS <- strtoi(args[3])
+INCORRECT_CREDIT <- as.double(args[4])
+GRACE <- as.double(args[5])
 
-## Path to folder where you want your result csv files to go. You must edit this!
-## Windows format example:
-## OUTPUT_DIRECTORY <- "C:\\Users\\your-username\\Downloads\\"
-## Mac/Linux example:
-OUTPUT_DIRECTORY <- "/home/ben/Dropbox/Courses/227/r_stuff/ck_grader/"
+if(!require("stringi", quietly = TRUE, character.only = TRUE)){
+    install.packages("stringi", character.only = TRUE)
+}
+library("stringi", quietly = TRUE, character.only = TRUE)
 
-## Maximum points for each assignment. Can be a number, or "NUM_QUESTIONS" which
-## means 1 point per question in assignment. Default: 10
-MAX_POINTS <- 10
-
-## Proportion of credit students get for completing a question, but answer is incorrect.
-## Default: 0.5 (half credit)
-INCORRECT_CREDIT <- 0.5
-
-## Proportion of points students are allowed to miss and still get full credit.
-## For example, if GRACE is 0.05, then the final grading step is to divide
-## all scores by (0.95*MAX_POINTS), so 95% becomes 100%. But 0% is still 0%.
-## Scores over 100% are brought down to 100%.
-## Default: 0.05
-GRACE <- 0.05
-
-
-library("stringi")
 options(stringsAsFactors=FALSE)
 
 ## inverse of make.names: make.headings("X10.5to10.9_12.18") gives "10.5to10.9_12-18"
@@ -74,7 +56,7 @@ grade_pd <- function(link){
     pd_result
 }
 
-## Parse file names in this directory
+## Parse file names
 input_filenames = list.files(path = INPUT_DIRECTORY, pattern = ".+\\.csv")
 output_filenames = list.files(path = OUTPUT_DIRECTORY, pattern = ".+\\.csv")
 ## assignments with page ranges
@@ -124,15 +106,17 @@ keepers <- rep(TRUE, nrow(asgn))
 for(i in 1:nrow(asgn)){
     if(!duped[i]){
         output_exists <- FALSE
-        for(j in 1:nrow(output_matches)){
-            if(!is.na(output_matches[j,2]) && asgn$course_id[i] == output_matches[j,2]){
-                output_exists <- TRUE
-                ## Remove rows from asgn that are already in output file w/ same page_range, dl_date
-                existing_asgn <- colnames(read.csv(paste0(OUTPUT_DIRECTORY, output_matches[j,1])))
-                for(k in 1:nrow(asgn)){
-                    if(asgn$course_id[k] == output_matches[j,2] &&
-                       asgn$col_name[k] %in% existing_asgn){
-                        keepers[k] <- FALSE
+        if(nrow(output_matches > 0)){
+            for(j in 1:nrow(output_matches)){
+               if(!is.na(output_matches[j,2]) && asgn$course_id[i] == output_matches[j,2]){
+                    output_exists <- TRUE
+                    ## Remove rows from asgn that are already in output file w/ same page_range, dl_date
+                    existing_asgn <- colnames(read.csv(paste0(OUTPUT_DIRECTORY, output_matches[j,1])))
+                    for(k in 1:nrow(asgn)){
+                        if(asgn$course_id[k] == output_matches[j,2] &&
+                           asgn$col_name[k] %in% existing_asgn){
+                            keepers[k] <- FALSE
+                        }
                     }
                 }
             }
@@ -155,12 +139,14 @@ file_name <- c()
 course_id <- c()
 page <- c()
 dl_date <- c()
-for(i in 1:nrow(page_matches)){
-    if(!is.na(page_matches[i,1])){
-        file_name <- append(file_name, page_matches[i,1])
-        course_id <- append(course_id, page_matches[i,2])
-        page <- append(page, page_matches[i,3])
-        dl_date <- append(dl_date, page_matches[i,4])
+if(nrow(page_matches) > 0){
+    for(i in 1:nrow(page_matches)){
+        if(!is.na(page_matches[i,1])){
+            file_name <- append(file_name, page_matches[i,1])
+            course_id <- append(course_id, page_matches[i,2])
+            page <- append(page, page_matches[i,3])
+            dl_date <- append(dl_date, page_matches[i,4])
+        }
     }
 }
 pd <- data.frame(file_name=file_name, course_id=course_id, page=page, dl_date=dl_date)
@@ -197,12 +183,14 @@ for(i in 1:nrow(asgn)){
 ##   print(pd[key,])
 ## }                                        
 pd_links <- list()
-for(i in 1:nrow(pd)){
-    for(j in 1:nrow(asgn)){
-        if(pd$course_id[i] == asgn$course_id[j] &&
-           pd$page[i] %in% page_list[[j]] &&
-           pd$dl_date[i] == asgn$dl_date[j]){
-            pd_links[[asgn$file_name[j]]] <- append(pd_links[[asgn$file_name[j]]], rownames(pd)[i])
+if(nrow(pd) > 0){
+    for(i in 1:nrow(pd)){
+        for(j in 1:nrow(asgn)){
+            if(pd$course_id[i] == asgn$course_id[j] &&
+               pd$page[i] %in% page_list[[j]] &&
+               pd$dl_date[i] == asgn$dl_date[j]){
+                pd_links[[asgn$file_name[j]]] <- append(pd_links[[asgn$file_name[j]]], rownames(pd)[i])
+            }
         }
     }
 }

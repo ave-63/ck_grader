@@ -6,7 +6,7 @@ This is a small R program that makes grading CourseKata textbook homework easy. 
 
 2. (Optional but recommended) Go to "Modules", and within some or all of the pages 1.0 to 1.6, and click "Download data." Put the files in the same folder as step 1, and call them `MW_1.0_2-20.csv`, `MW_1.1_2-20.csv`, ..., `MW_1.6_2-20.csv`. These *page detail* files have much more detailed grades than the corresponding column in the *assignment file* from step 1.
 
-3. Double click the file `do_ck_grades_win.bat` in MS Windows or `do_ck_grades_mac.sh` in Macintosh. It will print out some information and maybe warnings, and *voilà!* There is a now a file called `ck_grades_MW.csv` which contains a column with the assignment's grades, labelled `1.0to1.6_2-20`.
+3. Double click the file `do_ck_grades_win.bat` in MS Windows or `do_ck_grades_mac.command` in Macintosh. It will print out some information and maybe warnings, and *voilà!* There is a now a file called `ck_grades_MW.csv` which contains a column with the assignment's grades, labelled `1.0to1.6_2-20`.
 
 4. Repeat the process for every assignment on every due date, keeping everything in the same folders. It will have a ton of csv files, but they don't take up much storage space. To grade late HW, just repeat the process but with a different date label. Every page range/date assignment file will have its own column in the `MW_ck_grades.csv` file.
 
@@ -24,24 +24,44 @@ So, you can go to Module pages to download the individual *page detail* csv file
 - It is extremely tedious. Let's say you have two classes, and in a certain week you have two assignments due, each including four pages. That's sixteen page detail csv's from which you have to copy columns. Then you'll have to write a formula in each of the four assignment csv's. Then later, if you want to give anyone late credit, you have to do it all again. Using `ck_grader`, you only have to download the files, but there's no need to open any of them yourself.
 - Written answers are not counted as "correct" in the page detail view. If you don't scroll way to the right to see their answers, you will unwittingly be marking them all incorrect.
 
-## Installation
+## Installation (MS Windows)
 
 1. Install R on your computer. Go to [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html), choose a nearby mirror, choose `base`, and follow the instructions.
 
-2. Download the following list of files, either using github (tricky), or [from my dropbox](https://www.dropbox.com/sh/jl7t98jy3c28cnn/AABPrtCmk8ZkhCvtKsfBzr8Ga?dl=0):
+2. Download the following list of files, either using github (tricky), or [from my dropbox](https://www.dropbox.com/sh/jl7t98jy3c28cnn/AABPrtCmk8ZkhCvtKsfBzr8Ga?dl=0). If you get them from my dropbox, make sure to make your own copy on your own computer somewhere, and don't edit the one in my dropbox:
+    - `do_ck_grades_win.bat` -- This is a tiny executable script that you double-click on, and it runs `R` with the code in `ck_grader.r`. You can put it anywhere handy, like on your desktop, home directory, or wherever you keep your Statistics materials.
+    - `ck_grader.r` -- This is the main file. Put it in the same folder as `do_ck_grades_win.bat`. 
+    - `README.md` -- The instructions you're reading right now.
 
-- `do_ck_grades.bat` (MS Windows) or `do_ck_grades.sh` (Macintosh) -- This is a tiny executable script that you double-click on, and it runs `R` with the code in `ck_grader.r`. You can put it anywhere handy, like on your desktop, home directory, or wherever you keep your Statistics materials.
-- `ck_grader.r` -- This is the main file. Put it in the same folder as `do_ck_grades.bat`. Do not just use the version shared with others in dropbox, because you'll need to customize some things for your computer (step 3 below).
-- `README.md` -- The instructions you're reading right now.
+3. There are two options you **must** customize. Open `do_ck_grades_win.bat` in any text editor, such as MS Notepad, and change the following:
+    - `INPUT_DIRECTORY` -- This is the path to where you put all csv's you download from CourseKata. It can be your Downloads folder for convenience, if you don't mind it filling up with lots of csv's. 
+	- `OUTPUT_DIRECTORY` -- This is where `ck_grader` will put the result files, eg `ck_grades_MW.csv`. It can be the same as `INPUT_DIRECTORY`, or the place you keep your class grades, or whatever.
+    - These other three options start with working defaults, but you should review them and change them to your liking: `MAX_POINTS`, `INCORRECT_CREDIT`, and `GRACE`. If you want, you can also dive in to `ck_grader.r` and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
 
-3. There are two options you **must** customize. Open `ck_grader.r` in any text editor, such as MS Notepad. Near the top, under `## USER OPTIONS`, you can read about and change the values of:
+4. After you have some assignment and page detail files downloaded in `INPUT_DIRECTORY`, go ahead and double-click `do_ck_grades_win.bat` to run the program. It should open a command prompt with some information and warning/error messages. The first time you run it, it will take a few minutes to install some R packages, but after they're installed it should only take a few seconds. However, you may get an error installing the packages, saying you don't have permission to write to `C:\Program Files\R-4.0.3\...`. If this happens to you, here are two ways to get around it:
+   A. Hold down Ctrl while right-clicking `do_ck_grades_win.bat`. One of the options should be "Run as administrator." Click it, enter your password, and R will install the packages in the `C:\Program Files\R-4.0.3\...` folder. After doing this once, you'll be able to double click `do_ck_grades_win.bat` in the future.
+   B. Follow these steps to create a personal library in your `C:\User\...` folder and install packages there:
+    1. Open a command prompt, by pressing the start button and typing `cmd` [Enter].
+    2. Type `R` [Enter] to start a session where you can type R commands interactively.
+    3. In the R session, type `install.packages("stringi")` [Enter]. You will get the same error message as before, but this time, it will ask if you would like to use a personal library instead? Type `yes` to the rest of the questions. This will download and install some R packages. After doing this once, you'll be able to double click `do_ck_grades_win.bat` in the future.
 
-- `INPUT_DIRECTORY` -- This is the path to where you put all csv's you download from CourseKata. It can be your Downloads folder for convenience, if you don't mind it filling up with lots of csv's. The examples commented out with `##` show how the format should look on Windows/Mac.
-- `OUTPUT_DIRECTORY` -- This is where `ck_grader` will put the result files, eg `ck_grades_MW.csv`. It can be the same as `INPUT_DIRECTORY`, or the place you keep your class grades, or whatever.
+## Installation (Apple Macintosh)
 
-These other three options start with working defaults, but you should review them and change them to your liking: `MAX_POINTS`, `INCORRECT_CREDIT`, and `GRACE`.
+1. Install R on your computer. Go to [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html), choose a nearby mirror, choose `base`, and follow the instructions.
 
-If you want, you can also dive in and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
+2. Download the following list of files, either using github (tricky), or [from my dropbox](https://www.dropbox.com/sh/jl7t98jy3c28cnn/AABPrtCmk8ZkhCvtKsfBzr8Ga?dl=0). If you get them from my dropbox, make sure to make your own copy on your own computer somewhere, and don't edit the one in my dropbox:
+    - `do_ck_grades_mac.command` -- This is a tiny executable script that you double-click on, and it runs `R` with the code in `ck_grader.r`. You can put it anywhere handy, like on your desktop, home directory, or wherever you keep your Statistics materials.
+    - `ck_grader.r` -- This is the main file. Put it in the same folder as `do_ck_grades_mac.command`. 
+    - `README.md` -- The instructions you're reading right now.
+
+3. There are two options you **must** customize. Open `do_ck_grades_mac.command` in any text editor, such as TextEdit, and change the following:
+    - `INPUT_DIRECTORY` -- This is the path to where you put all csv's you download from CourseKata. It can be your Downloads folder for convenience, if you don't mind it filling up with lots of csv's. 
+	- `OUTPUT_DIRECTORY` -- This is where `ck_grader` will put the result files, eg `ck_grades_MW.csv`. It can be the same as `INPUT_DIRECTORY`, or the place you keep your class grades, or whatever.
+    - These other three options start with working defaults, but you should review them and change them to your liking: `MAX_POINTS`, `INCORRECT_CREDIT`, and `GRACE`. If you want, you can also dive in and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
+
+4. Open a terminal window (under Applications -> Utilities). In the terminal, type the command: `chmod +x /Users/your-name/folder/where/you/put/do_ck_grades_mac.command` [Enter].
+
+Now, after you have downloaded some assignment and page detail files in `INPUT_DIRECTORY`, you should be able to double-click `do_ck_grades_mac.command` to run the program. It should open a command prompt with some information and warning/error messages. The first time you run it, it will take a few minutes to install some R packages, but after they're installed it should only take a few seconds.
 
 ## File name rules
 
