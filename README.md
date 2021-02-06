@@ -39,11 +39,11 @@ So, you can go to Module pages to download the individual *page detail* csv file
     - These other three options start with working defaults, but you should review them and change them to your liking: `MAX_POINTS`, `INCORRECT_CREDIT`, and `GRACE`. If you want, you can also dive in to `ck_grader.r` and change the code itself. I recommend keeping your changes to the function `grade_pd` and the final `for` loop unless you know what you're doing.
 
 4. After you have some assignment and page detail files downloaded in `INPUT_DIRECTORY`, go ahead and double-click `do_ck_grades_win.bat` to run the program. It should open a command prompt with some information and warning/error messages. The first time you run it, it will take a few minutes to install some R packages, but after they're installed it should only take a few seconds. However, you may get an error installing the packages, saying you don't have permission to write to `C:\Program Files\R-4.0.3\...`. If this happens to you, here are two ways to get around it:
-   A. Hold down Ctrl while right-clicking `do_ck_grades_win.bat`. One of the options should be "Run as administrator." Click it, enter your password, and R will install the packages in the `C:\Program Files\R-4.0.3\...` folder. After doing this once, you'll be able to double click `do_ck_grades_win.bat` in the future.
-   B. Follow these steps to create a personal library in your `C:\User\...` folder and install packages there:
-    1. Open a command prompt, by pressing the start button and typing `cmd` [Enter].
-    2. Type `R` [Enter] to start a session where you can type R commands interactively.
-    3. In the R session, type `install.packages("stringi")` [Enter]. You will get the same error message as before, but this time, it will ask if you would like to use a personal library instead? Type `yes` to the rest of the questions. This will download and install some R packages. After doing this once, you'll be able to double click `do_ck_grades_win.bat` in the future.
+   - Option A: Hold down Ctrl while right-clicking `do_ck_grades_win.bat`. One of the options should be "Run as administrator." Click it, enter your password, and R will install the packages in the `C:\Program Files\R-4.0.3\...` folder. After doing this once, you'll be able to double click `do_ck_grades_win.bat` in the future.
+   - Option B: Follow these steps to create a personal library in your `C:\User\...` folder and install packages there:
+      1. Open a command prompt, by pressing the start button and typing `cmd` [Enter].
+      2. Type `R` [Enter] to start a session where you can type R commands interactively.
+      3. In the R session, type `install.packages("stringi")` [Enter]. You will get the same error message as before, but this time, it will ask if you would like to use a personal library instead? Type `yes` to the rest of the questions. This will download and install some R packages. After doing this once, you'll be able to double click `do_ck_grades_win.bat` in the future.
 
 ## Installation (Apple Macintosh)
 
