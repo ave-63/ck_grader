@@ -20,6 +20,19 @@ make.headings <- function(name){
     paste0(parts[,2], "-", parts[,3])
 }
 
+## Returns vector of strings, headings of df,
+## converted from "Page.1.3...complete" to "Page.1.3" as necessary
+strip_headings <- function(df){
+    headings <- colnames(df)
+    matches <- stri_match_first_regex(headings, "(.*)\\.\\.\\.complete")
+    for(i in 1:length(headings)){
+        if(!is.na(matches[i,2])){
+            headings[i] <- matches[i,2]
+        }
+    }
+    headings
+}
+
 ## Grade a page detail, given row name in pd (link).
 ## Returns a vector. First entry is the number of questions (max possible score for page).
 grade_pd <- function(link){
@@ -198,6 +211,7 @@ if(nrow(pd) > 0){
 ## Now that all the data structures and files are set up, it's time to grade.
 for(a in 1:nrow(asgn)){
     asgn_df <- read.csv(paste0(INPUT_DIRECTORY, asgn[a, "file_name"]))
+    colnames(asgn_df) <- strip_headings(asgn_df) # added 2021-04 to deal with new " - complete" headings
     these_links <- pd_links[[asgn[a, "file_name"]]]
     print(paste("Grading assignment:",
                 asgn[a, "file_name"]), quote = FALSE)
