@@ -146,7 +146,11 @@ for(i in 1:nrow(asgn)){
     }
 }
 asgn <- asgn[keepers,] # keep a row iff keepers is TRUE
-
+if(nrow(asgn) == 0){
+    print("No assignments to grade. Quitting.")
+    quit()
+}
+    
 ## Populate pd dataframe with page_matches
 file_name <- c()
 course_id <- c()
